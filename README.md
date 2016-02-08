@@ -45,6 +45,8 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 - [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
 - [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
+- [RoundedImageView](https://github.com/vinc3m1/RoundedImageView) - Fast ImageView that supports rounded corners, ovals, and circles
+- [Butterknife](https://jakewharton.github.io/butterknife/) - View "injection" library
 
 
 ## License
