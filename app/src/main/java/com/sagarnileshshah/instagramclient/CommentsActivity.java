@@ -15,6 +15,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class CommentsActivity extends AppCompatActivity {
@@ -23,7 +25,8 @@ public class CommentsActivity extends AppCompatActivity {
     private static final String CLIENT_ID = "e05c462ebd86446ea48a5af73769b602";
     private ArrayList<CommentItem> mCommentItemArrayList;
     private CommentArrayAdapter mCommentArrayAdapter;
-    private ListView mLvCommentItems;
+
+    @Bind(R.id.lvCommentItems) ListView mLvCommentItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +34,13 @@ public class CommentsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_comments);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mCommentItemArrayList = new ArrayList<>();
         mCommentArrayAdapter = new CommentArrayAdapter(this, mCommentItemArrayList);
 
-        mLvCommentItems = (ListView) findViewById(R.id.lvCommentItems);
         mLvCommentItems.setAdapter(mCommentArrayAdapter);
 
         String mediaId = getIntent().getStringExtra("mediaId");

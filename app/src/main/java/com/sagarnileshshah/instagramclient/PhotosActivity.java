@@ -18,6 +18,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class PhotosActivity extends AppCompatActivity {
@@ -25,8 +27,12 @@ public class PhotosActivity extends AppCompatActivity {
     private static final String CLIENT_ID = "e05c462ebd86446ea48a5af73769b602";
     private ArrayList<PhotoItem> mPhotoItemArrayList;
     private PhotoArrayAdapter mPhotoArrayAdapter;
-    private ListView mLvPhotoItems;
-    private SwipeRefreshLayout mSwipeContainer;
+
+    @Bind(R.id.lvPhotoItems)
+    ListView mLvPhotoItems;
+
+    @Bind(R.id.swipeContainer)
+    SwipeRefreshLayout mSwipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +40,11 @@ public class PhotosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photos);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
 
         mPhotoItemArrayList = new ArrayList<>();
         mPhotoArrayAdapter = new PhotoArrayAdapter(this, mPhotoItemArrayList);
 
-        mLvPhotoItems = (ListView) findViewById(R.id.lvPhotoItems);
         mLvPhotoItems.setAdapter(mPhotoArrayAdapter);
 
         mSwipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);

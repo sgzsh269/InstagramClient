@@ -12,6 +12,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by sshah on 2/7/16.
  */
@@ -22,10 +25,18 @@ public class CommentArrayAdapter extends ArrayAdapter {
         super(context, 0, objects);
     }
 
-    private static class ViewHolder {
+    public static class ViewHolder {
+        @Bind(R.id.tvCommentRelativeTimeSpan)
         TextView tvCommentRelativeTimeSpan;
+        @Bind(R.id.ivCommentUserProfileImage)
         RoundedImageView ivCommentUserProfileImage;
+        @Bind(R.id.tvCommentText)
         TextView tvCommentText;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+
     }
 
     @Override
@@ -34,12 +45,9 @@ public class CommentArrayAdapter extends ArrayAdapter {
         CommentItem commentItem = (CommentItem) getItem(position);
 
         ViewHolder viewHolder;
-        if (convertView == null){
-            viewHolder = new ViewHolder();
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_comment, parent, false);
-            viewHolder.ivCommentUserProfileImage = (RoundedImageView) convertView.findViewById(R.id.ivCommentUserProfileImage);
-            viewHolder.tvCommentText = (TextView) convertView.findViewById(R.id.tvCommentText);
-            viewHolder.tvCommentRelativeTimeSpan = (TextView) convertView.findViewById(R.id.tvCommentRelativeTimeSpan);
+            viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

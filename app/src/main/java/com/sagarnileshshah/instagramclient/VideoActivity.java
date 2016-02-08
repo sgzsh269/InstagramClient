@@ -7,17 +7,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class VideoActivity extends AppCompatActivity implements MediaPlayer.OnCompletionListener {
 
+    @Bind(R.id.vvVideo)
     VideoView vvVideo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-
-        vvVideo = (VideoView) findViewById(R.id.vvVideo);
-
+        ButterKnife.bind(this);
         String url = getIntent().getStringExtra("url");
 
         vvVideo.setMediaController(new MediaController(this));

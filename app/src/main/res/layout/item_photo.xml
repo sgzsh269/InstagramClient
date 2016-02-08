@@ -28,7 +28,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:textSize="16sp"
-        android:textColor="@color/appGrey"/>
+        android:textColor="@color/appGrey"
+        android:drawableLeft="@drawable/ic_time_16dp"
+        android:drawablePadding="4dp"/>
 
     <TextView
         android:id="@+id/tvUserName"
@@ -53,12 +55,15 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="1dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
         android:textSize="16sp"
         android:textColor="#74AFE0"
         android:maxLines="1"
-        android:ellipsize="end"/>
+        android:ellipsize="end"
+        android:drawableLeft="@drawable/ic_location_16dp"
+        android:drawableStart="@drawable/ic_location_16dp"
+        android:drawablePadding="4dp"/>
 
     <ImageView
         android:id="@+id/ivPhoto"
@@ -80,36 +85,25 @@
         android:layout_alignParentEnd="true"
         android:adjustViewBounds="true"/>
 
-    <ImageView
-        android:id="@+id/ivIconLike"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:layout_below="@id/ivPhoto"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:src="@drawable/ic_like_blue_24dp"
-        android:adjustViewBounds="true"/>
-
     <TextView
         android:id="@+id/tvLikes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivPhoto"
-        android:layout_toRightOf="@id/ivIconLike"
-        android:layout_toEndOf="@id/ivIconLike"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:textSize="16sp"
         android:textColor="@color/appDarkBlue"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:drawableLeft="@drawable/ic_favorite_16dp"
+        android:drawablePadding="4dp"/>
 
     <TextView
         android:id="@+id/tvCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivIconLike"
+        android:layout_below="@id/tvLikes"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"

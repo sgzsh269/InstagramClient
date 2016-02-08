@@ -16,6 +16,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by sshah on 2/4/16.
  */
@@ -25,18 +28,31 @@ public class PhotoArrayAdapter extends ArrayAdapter {
         super(context, 0, objects);
     }
 
-    private static class ViewHolder {
+    public static class ViewHolder {
+        @Bind(R.id.tvUserName)
         TextView tvUserName;
+        @Bind(R.id.tvRelativeTimeSpan)
         TextView tvRelativeTimeSpan;
-        ImageView ivIconLike;
+        @Bind(R.id.tvLikes)
         TextView tvLikes;
+        @Bind(R.id.tvLocation)
         TextView tvLocation;
+        @Bind(R.id.ivPhoto)
         ImageView ivPhoto;
+        @Bind(R.id.ivUserProfileImage)
         RoundedImageView ivUserProfileImage;
+        @Bind(R.id.llCommentsContainer)
         LinearLayout llCommentsContainer;
+        @Bind(R.id.tvCommentCount)
         TextView tvCommentCount;
+        @Bind(R.id.tvCaption)
         TextView tvCaption;
+        @Bind(R.id.ivIconVideo)
         ImageView ivIconVideo;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 
 
@@ -47,19 +63,8 @@ public class PhotoArrayAdapter extends ArrayAdapter {
 
         ViewHolder viewHolder;
         if (convertView == null) {
-            viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_photo, parent, false);
-            viewHolder.tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
-            viewHolder.tvRelativeTimeSpan = (TextView) convertView.findViewById(R.id.tvRelativeTimeSpan);
-            viewHolder.ivIconLike = (ImageView) convertView.findViewById(R.id.ivIconLike);
-            viewHolder.tvLikes = (TextView) convertView.findViewById(R.id.tvLikes);
-            viewHolder.tvLocation = (TextView) convertView.findViewById(R.id.tvLocation);
-            viewHolder.ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
-            viewHolder.ivUserProfileImage = (RoundedImageView) convertView.findViewById(R.id.ivUserProfileImage);
-            viewHolder.llCommentsContainer = (LinearLayout) convertView.findViewById(R.id.llCommentsContainer);
-            viewHolder.tvCommentCount = (TextView) convertView.findViewById(R.id.tvCommentCount);
-            viewHolder.tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
-            viewHolder.ivIconVideo = (ImageView) convertView.findViewById(R.id.ivIconVideo);
+            viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -72,10 +77,8 @@ public class PhotoArrayAdapter extends ArrayAdapter {
         if (photoItem.likesCount > 0) {
             viewHolder.tvLikes.setText(Integer.toString(photoItem.likesCount) + " likes");
             viewHolder.tvLikes.setVisibility(View.VISIBLE);
-            viewHolder.ivIconLike.setVisibility(View.VISIBLE);
         } else {
             viewHolder.tvLikes.setVisibility(View.GONE);
-            viewHolder.ivIconLike.setVisibility(View.GONE);
         }
 
         if (photoItem.caption != null) {
