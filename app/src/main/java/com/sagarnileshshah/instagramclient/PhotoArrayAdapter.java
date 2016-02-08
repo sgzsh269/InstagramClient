@@ -1,17 +1,13 @@
 package com.sagarnileshshah.instagramclient;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,8 +15,9 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by sshah on 2/4/16.
@@ -31,73 +28,131 @@ public class PhotoArrayAdapter extends ArrayAdapter {
         super(context, 0, objects);
     }
 
+    public static class ViewHolder {
+        @Bind(R.id.tvUserName)
+        TextView tvUserName;
+        @Bind(R.id.tvRelativeTimeSpan)
+        TextView tvRelativeTimeSpan;
+        @Bind(R.id.tvLikes)
+        TextView tvLikes;
+        @Bind(R.id.tvLocation)
+        TextView tvLocation;
+        @Bind(R.id.ivPhoto)
+        ImageView ivPhoto;
+        @Bind(R.id.ivUserProfileImage)
+        RoundedImageView ivUserProfileImage;
+        @Bind(R.id.llCommentsContainer)
+        LinearLayout llCommentsContainer;
+        @Bind(R.id.tvCommentCount)
+        TextView tvCommentCount;
+        @Bind(R.id.tvCaption)
+        TextView tvCaption;
+        @Bind(R.id.ivIconVideo)
+        ImageView ivIconVideo;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        PhotoItem photoItem = (PhotoItem) getItem(position);
+        final PhotoItem photoItem = (PhotoItem) getItem(position);
 
+        ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_photo, parent, false);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        TextView tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
-        tvUserName.setText(photoItem.userName);
+        viewHolder.tvUserName.setText(photoItem.userName);
 
-        TextView tvRelativeTimeSpan = (TextView) convertView.findViewById(R.id.tvRelativeTimeSpan);
-        tvRelativeTimeSpan.setText(photoItem.getRelativeTimeSpan());
+        viewHolder.tvRelativeTimeSpan.setText(Utility.getRelativeTimeSpan(photoItem.createdUnixTimeInSec, true));
 
-        ImageView tvIconLike = (ImageView) convertView.findViewById(R.id.ivIconLike);
-
-        TextView tvLikes = (TextView) convertView.findViewById(R.id.tvLikes);
         if (photoItem.likesCount > 0) {
-            tvLikes.setText(Integer.toString(photoItem.likesCount) + " likes");
-            tvLikes.setVisibility(View.VISIBLE);
-            tvIconLike.setVisibility(View.VISIBLE);
+            viewHolder.tvLikes.setText(Integer.toString(photoItem.likesCount) + " likes");
+            viewHolder.tvLikes.setVisibility(View.VISIBLE);
         } else {
-            tvLikes.setVisibility(View.GONE);
-            tvIconLike.setVisibility(View.GONE);
+            viewHolder.tvLikes.setVisibility(View.GONE);
         }
 
-        TextView tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
-        ForegroundColorSpan userNameColorSpan = new ForegroundColorSpan(getContext().getResources().getColor(R.color.appDarkBlue));
-        StyleSpan boldStyleSpan = new StyleSpan(Typeface.BOLD);
-        SpannableString captionSpannableString = new SpannableString(photoItem.userName + " " + photoItem.caption);
-        captionSpannableString.setSpan(userNameColorSpan, 0, photoItem.userName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        captionSpannableString.setSpan(boldStyleSpan, 0, photoItem.userName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        Pattern pattern = Pattern.compile("[#|@].+?\\b");
-        Matcher matcher = pattern.matcher(photoItem.caption);
-        while (matcher.find()) {
-            int userNameoffset = photoItem.userName.length() + 1;
-            int start = matcher.start() + userNameoffset;
-            String text = matcher.group();
-            int end = start + text.length();
-            ForegroundColorSpan tagMentionColorSpan = new ForegroundColorSpan(getContext().getResources().getColor(R.color.appDarkBlue));
-            captionSpannableString.setSpan(tagMentionColorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (photoItem.caption != null) {
+            Utility.formatTextViewContent(getContext(), viewHolder.tvCaption, photoItem.userName, photoItem.caption);
         }
-        tvCaption.setText(captionSpannableString);
 
-        TextView tvLocation = (TextView) convertView.findViewById(R.id.tvLocation);
-        RelativeLayout.LayoutParams tvUserNamelayoutParams = (RelativeLayout.LayoutParams) tvUserName.getLayoutParams();
+        RelativeLayout.LayoutParams tvUserNamelayoutParams = (RelativeLayout.LayoutParams) viewHolder.tvUserName.getLayoutParams();
         if (photoItem.location != null) {
-            float leftMarginPx = DeviceDimensionsHelper.convertDpToPixel(8, getContext());
-            float topMarginPx = DeviceDimensionsHelper.convertDpToPixel(4, getContext());
+            float leftMarginPx = Utility.convertDpToPixel(8, getContext());
+            float topMarginPx = Utility.convertDpToPixel(4, getContext());
             tvUserNamelayoutParams.setMargins((int) leftMarginPx, (int) topMarginPx, 0, 0);
-            tvLocation.setText(photoItem.location);
-            tvLocation.setVisibility(View.VISIBLE);
+            viewHolder.tvLocation.setText(photoItem.location);
+            viewHolder.tvLocation.setVisibility(View.VISIBLE);
         } else {
-            float leftMarginPx = DeviceDimensionsHelper.convertDpToPixel(8, getContext());
-            float topMarginPx = DeviceDimensionsHelper.convertDpToPixel(12, getContext());
+            float leftMarginPx = Utility.convertDpToPixel(8, getContext());
+            float topMarginPx = Utility.convertDpToPixel(12, getContext());
             tvUserNamelayoutParams.setMargins((int) leftMarginPx, (int) topMarginPx, 0, 0);
-            tvLocation.setVisibility(View.GONE);
+            viewHolder.tvLocation.setVisibility(View.GONE);
         }
 
-        ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
-        ivPhoto.setImageResource(0);
-        Picasso.with(getContext()).load(photoItem.imageUrl).into(ivPhoto);
+        viewHolder.ivPhoto.setImageResource(0);
+        Picasso.with(getContext()).load(photoItem.imageUrl).placeholder(R.drawable.photo_placeholder).error(R.drawable.photo_placeholder).into(viewHolder.ivPhoto);
 
-        RoundedImageView ivUserProfileImage = (RoundedImageView) convertView.findViewById(R.id.ivUserProfileImage);
-        ivUserProfileImage.setImageResource(0);
-        Picasso.with(getContext()).load(photoItem.userProfileImageUrl).into(ivUserProfileImage);
+        if (photoItem.type.equals("video")) {
+            viewHolder.ivIconVideo.setVisibility(View.VISIBLE);
+            viewHolder.ivPhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), VideoActivity.class);
+                    intent.putExtra("url", photoItem.videoUrl);
+                    getContext().startActivity(intent);
+                }
+            });
+        } else {
+            viewHolder.ivIconVideo.setVisibility(View.GONE);
+            viewHolder.ivPhoto.setOnClickListener(null);
+        }
+
+
+        viewHolder.ivUserProfileImage.setImageResource(0);
+        Picasso.with(getContext()).load(photoItem.userProfileImageUrl).placeholder(R.drawable.ic_person_blue_24dp).error(R.drawable.ic_person_blue_24dp).into(viewHolder.ivUserProfileImage);
+
+        viewHolder.llCommentsContainer.removeAllViews();
+
+        if (photoItem.totalCommentsCount > 0) {
+            viewHolder.tvCommentCount.setVisibility(View.GONE);
+            int photoCommentStartIndex = 0;
+            if (photoItem.totalCommentsCount == 1) {
+                photoCommentStartIndex = photoItem.commentItems.size() - 1;
+            } else if (photoItem.totalCommentsCount > 1) {
+                photoCommentStartIndex = photoItem.commentItems.size() - 2;
+            }
+            if (photoItem.totalCommentsCount > 2) {
+                viewHolder.tvCommentCount.setVisibility(View.VISIBLE);
+                int photoCommentsSize = photoItem.commentItems.size();
+                viewHolder.tvCommentCount.setText("View all " + Integer.toString(photoItem.totalCommentsCount) + " comments");
+                viewHolder.tvCommentCount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent intent = new Intent(getContext(), CommentsActivity.class);
+                        intent.putExtra("mediaId", photoItem.mediaId);
+                        getContext().startActivity(intent);
+                    }
+                });
+            }
+            for (CommentItem commentItem : photoItem.commentItems.subList(photoCommentStartIndex, photoItem.commentItems.size())) {
+                TextView commentView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.container_item_comment, null);
+                Utility.formatTextViewContent(getContext(), commentView, commentItem.userName, commentItem.text);
+                viewHolder.llCommentsContainer.addView(commentView);
+            }
+        } else {
+            viewHolder.tvCommentCount.setVisibility(View.GONE);
+        }
 
         return convertView;
 

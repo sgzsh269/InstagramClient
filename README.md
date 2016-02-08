@@ -3,7 +3,7 @@
 **FLASH** is a read-only photo viewer for Instagram which allows a user to check out popular photos
 
 
-Time spent: **7** hours spent in total
+Time spent: **20** hours spent in total
 
 
 ## User Stories
@@ -15,11 +15,28 @@ The following **required** functionality is completed:
   * [X] Graphic, Caption, Username
   * [X] Relative timestamp, like count, user profile image
 
+The following **optional** features are implemented:
+
+* [X] User can **pull-to-refresh** popular stream to get the latest popular photos
+* [X] Show latest comments for each photo
+* [X] Display each photo with the same style and proportions as the real Instagram
+* [X] Display each user profile image using a RoundedImageViewDisplay each user profile image using a [RoundedImageView](https://github.com/vinc3m1/RoundedImageView)
+* [X] Display a nice default placeholder graphic for each image during loading
+* [X] Improved the user interface through styling and coloring
+
+The following **bonus** features are implemented:
+
+* [X] Show last 2 comments for each photo
+* [X] Allow user to view all comments for an image within a separate activity or dialog fragment
+* [X] Allow video posts to be played in full-screen using the VideoView
+* [X] Apply the popular Butterknife annotation library to reduce view boilerplate
+
+
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='flashapp.gif' title='Video Walkthrough' width='425' height='714' alt='Video Walkthrough' />
+<img src='flashapp.gif' title='Video Walkthrough' width='297' height='500' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
